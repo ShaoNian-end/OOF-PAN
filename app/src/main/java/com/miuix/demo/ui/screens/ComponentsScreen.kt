@@ -9,9 +9,9 @@ import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.state.ToggleableState
 import androidx.compose.ui.unit.dp
 import top.yukonga.miuix.kmp.basic.*
-import top.yukonga.miuix.kmp.extra.*
 import top.yukonga.miuix.kmp.theme.MiuixTheme
 
 /**
@@ -21,6 +21,8 @@ import top.yukonga.miuix.kmp.theme.MiuixTheme
 fun ComponentsScreen(
     onBack: () -> Unit
 ) {
+    val colors = MiuixTheme.colorScheme
+
     Scaffold(
         topBar = {
             TopAppBar(
@@ -44,18 +46,17 @@ fun ComponentsScreen(
                 .padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            // ===== 基础组件 =====
             SmallTitle(text = "基础组件")
 
             // Card
             Card(modifier = Modifier.fillMaxWidth()) {
                 Column(modifier = Modifier.padding(16.dp)) {
                     Text(text = "Card 卡片组件")
-                    Text(text = "卡片用于展示分组信息", color = MiuixTheme.colorScheme.onSurfaceVariant)
+                    Text(text = "卡片用于展示分组信息", color = colors.onSurface)
                 }
             }
 
-            // Button 示例
+            // Button
             SmallTitle(text = "Button 按钮")
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -69,11 +70,9 @@ fun ComponentsScreen(
                 }
             }
 
-            // IconButton 示例
+            // IconButton
             SmallTitle(text = "IconButton 图标按钮")
-            Row(
-                horizontalArrangement = Arrangement.spacedBy(8.dp)
-            ) {
+            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                 IconButton(onClick = { }) {
                     Icon(imageVector = Icons.Filled.Favorite, contentDescription = "收藏")
                 }
@@ -85,17 +84,17 @@ fun ComponentsScreen(
                 }
             }
 
-            // TextField 示例
+            // TextField
             SmallTitle(text = "TextField 输入框")
             var textValue by remember { mutableStateOf("") }
             TextField(
                 modifier = Modifier.fillMaxWidth(),
                 value = textValue,
                 onValueChange = { textValue = it },
-                placeholder = "请输入内容..."
+                label = "请输入内容..."
             )
 
-            // Switch 示例
+            // Switch
             SmallTitle(text = "Switch 开关")
             var switch1 by remember { mutableStateOf(true) }
             var switch2 by remember { mutableStateOf(false) }
@@ -116,17 +115,22 @@ fun ComponentsScreen(
                 Switch(checked = switch2, onCheckedChange = { switch2 = it })
             }
 
-            // Checkbox 示例
+            // Checkbox
             SmallTitle(text = "Checkbox 复选框")
-            var check1 by remember { mutableStateOf(true) }
-            var check2 by remember { mutableStateOf(false) }
+            var checkState1 by remember { mutableStateOf(ToggleableState.On) }
+            var checkState2 by remember { mutableStateOf(ToggleableState.Off) }
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text("选项 A")
-                Checkbox(checked = check1, onCheckedChange = { check1 = it })
+                Checkbox(
+                    state = checkState1,
+                    onClick = {
+                        checkState1 = if (checkState1 == ToggleableState.On) ToggleableState.Off else ToggleableState.On
+                    }
+                )
             }
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -134,10 +138,15 @@ fun ComponentsScreen(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text("选项 B")
-                Checkbox(checked = check2, onCheckedChange = { check2 = it })
+                Checkbox(
+                    state = checkState2,
+                    onClick = {
+                        checkState2 = if (checkState2 == ToggleableState.On) ToggleableState.Off else ToggleableState.On
+                    }
+                )
             }
 
-            // Slider 示例
+            // Slider
             SmallTitle(text = "Slider 滑动条")
             var sliderValue by remember { mutableFloatStateOf(0.5f) }
             Slider(
@@ -146,57 +155,11 @@ fun ComponentsScreen(
                 onValueChange = { sliderValue = it }
             )
 
-            // ProgressIndicator 示例
-            SmallTitle(text = "ProgressIndicator 进度条")
-            ProgressIndicator(
-                modifier = Modifier.fillMaxWidth(),
-                progress = 0.7f
-            )
-
-            // ===== 扩展组件 =====
-            SmallTitle(text = "扩展组件")
-
-            // SuperArrow 示例
-            SuperArrow(
-                title = "SuperArrow 带箭头组件",
-                onClick = { }
-            )
-            SuperArrow(
-                title = "可点击跳转",
-                subtitle = "这是一个带副标题的 Arrow 组件",
-                onClick = { }
-            )
-
-            // SuperSwitch 示例
-            var superSwitch1 by remember { mutableStateOf(true) }
-            var superSwitch2 by remember { mutableStateOf(false) }
-            SuperSwitch(
-                title = "SuperSwitch 开关",
-                checked = superSwitch1,
-                onCheckedChange = { superSwitch1 = it }
-            )
-            SuperSwitch(
-                title = "飞行模式",
-                subtitle = "关闭所有无线连接",
-                checked = superSwitch2,
-                onCheckedChange = { superSwitch2 = it }
-            )
-
-            // SuperCheckbox 示例
-            var superCheck1 by remember { mutableStateOf(true) }
-            SuperCheckbox(
-                title = "SuperCheckbox 复选框",
-                checked = superCheck1,
-                onCheckedChange = { superCheck1 = it }
-            )
-
-            // Divider
-            Divider(modifier = Modifier.padding(vertical = 8.dp))
+            // HorizontalDivider
+            HorizontalDivider(modifier = Modifier.padding(vertical = 8.dp))
 
             // FloatingActionButton
-            FloatingActionButton(
-                onClick = { }
-            ) {
+            FloatingActionButton(onClick = { }) {
                 Icon(imageVector = Icons.Filled.Add, contentDescription = "添加")
             }
 

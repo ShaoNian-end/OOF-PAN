@@ -6,12 +6,12 @@ plugins {
 
 android {
     namespace = "com.miuix.demo"
-    compileSdk = 35
+    compileSdk = 37
 
     defaultConfig {
         applicationId = "com.miuix.demo"
-        minSdk = 26
-        targetSdk = 35
+        minSdk = 33
+        targetSdk = 37
         versionCode = 1
         versionName = "1.0"
     }
@@ -31,8 +31,10 @@ android {
         targetCompatibility = JavaVersion.VERSION_17
     }
 
-    kotlinOptions {
-        jvmTarget = "17"
+    kotlin {
+        compilerOptions {
+            jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17)
+        }
     }
 
     buildFeatures {

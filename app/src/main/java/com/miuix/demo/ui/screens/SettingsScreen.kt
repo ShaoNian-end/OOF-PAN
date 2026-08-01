@@ -5,12 +5,11 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import top.yukonga.miuix.kmp.basic.*
-import top.yukonga.miuix.kmp.extra.*
+import top.yukonga.miuix.kmp.preference.*
 
 /**
  * 设置页面 - 展示 Miuix Preference 组件
@@ -49,28 +48,28 @@ fun SettingsScreen(
             var bluetoothEnabled by remember { mutableStateOf(false) }
             var mobileData by remember { mutableStateOf(true) }
 
-            SuperSwitch(
-                title = "Wi-Fi",
-                subtitle = "已连接: MyWiFi_5G",
+            SwitchPreference(
                 checked = wifiEnabled,
-                onCheckedChange = { wifiEnabled = it }
+                onCheckedChange = { wifiEnabled = it },
+                title = "Wi-Fi",
+                summary = "已连接: MyWiFi_5G"
             )
 
-            SuperSwitch(
-                title = "蓝牙",
-                subtitle = "未连接设备",
+            SwitchPreference(
                 checked = bluetoothEnabled,
-                onCheckedChange = { bluetoothEnabled = it }
+                onCheckedChange = { bluetoothEnabled = it },
+                title = "蓝牙",
+                summary = "未连接设备"
             )
 
-            SuperSwitch(
-                title = "移动数据",
-                subtitle = "当月已用 2.5 GB",
+            SwitchPreference(
                 checked = mobileData,
-                onCheckedChange = { mobileData = it }
+                onCheckedChange = { mobileData = it },
+                title = "移动数据",
+                summary = "当月已用 2.5 GB"
             )
 
-            Divider(modifier = Modifier.padding(vertical = 8.dp))
+            HorizontalDivider(modifier = Modifier.padding(vertical = 8.dp))
 
             // 显示设置
             SmallTitle(text = "显示与亮度")
@@ -84,14 +83,14 @@ fun SettingsScreen(
                 onValueChange = { brightnessValue = it }
             )
 
-            SuperSwitch(
-                title = "深色模式",
-                subtitle = "降低屏幕亮度，减轻视觉疲劳",
+            SwitchPreference(
                 checked = darkMode,
-                onCheckedChange = { darkMode = it }
+                onCheckedChange = { darkMode = it },
+                title = "深色模式",
+                summary = "降低屏幕亮度，减轻视觉疲劳"
             )
 
-            Divider(modifier = Modifier.padding(vertical = 8.dp))
+            HorizontalDivider(modifier = Modifier.padding(vertical = 8.dp))
 
             // 通知设置
             SmallTitle(text = "通知与提醒")
@@ -100,27 +99,27 @@ fun SettingsScreen(
             var soundEnabled by remember { mutableStateOf(true) }
             var vibrateEnabled by remember { mutableStateOf(true) }
 
-            SuperSwitch(
-                title = "允许通知",
+            SwitchPreference(
                 checked = notificationEnabled,
-                onCheckedChange = { notificationEnabled = it }
+                onCheckedChange = { notificationEnabled = it },
+                title = "允许通知"
             )
 
-            SuperSwitch(
-                title = "声音",
-                subtitle = "收到通知时播放声音",
+            SwitchPreference(
                 checked = soundEnabled,
-                onCheckedChange = { soundEnabled = it }
+                onCheckedChange = { soundEnabled = it },
+                title = "声音",
+                summary = "收到通知时播放声音"
             )
 
-            SuperSwitch(
-                title = "振动",
-                subtitle = "收到通知时振动",
+            SwitchPreference(
                 checked = vibrateEnabled,
-                onCheckedChange = { vibrateEnabled = it }
+                onCheckedChange = { vibrateEnabled = it },
+                title = "振动",
+                summary = "收到通知时振动"
             )
 
-            Divider(modifier = Modifier.padding(vertical = 8.dp))
+            HorizontalDivider(modifier = Modifier.padding(vertical = 8.dp))
 
             // 选项设置
             SmallTitle(text = "其他设置")
@@ -128,29 +127,26 @@ fun SettingsScreen(
             var option1 by remember { mutableStateOf(true) }
             var option2 by remember { mutableStateOf(false) }
 
-            SuperCheckbox(
+            CheckboxPreference(
                 title = "自动更新",
-                subtitle = "通过 Wi-Fi 自动下载更新",
                 checked = option1,
-                onCheckedChange = { option1 = it }
+                onCheckedChange = { option1 = it },
+                summary = "通过 Wi-Fi 自动下载更新"
             )
 
-            SuperCheckbox(
+            CheckboxPreference(
                 title = "发送使用数据",
-                subtitle = "帮助改进产品体验",
                 checked = option2,
-                onCheckedChange = { option2 = it }
+                onCheckedChange = { option2 = it },
+                summary = "帮助改进产品体验"
             )
 
-            SuperArrow(
-                title = "关于",
-                subtitle = "版本 1.0.0",
-                onClick = { }
+            ArrowPreference(
+                title = "关于"
             )
 
-            SuperArrow(
-                title = "隐私政策",
-                onClick = { }
+            ArrowPreference(
+                title = "隐私政策"
             )
 
             Spacer(modifier = Modifier.height(32.dp))

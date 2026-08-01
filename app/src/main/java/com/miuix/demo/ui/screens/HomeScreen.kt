@@ -5,7 +5,8 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import top.yukonga.miuix.kmp.basic.*
@@ -19,12 +20,14 @@ fun HomeScreen(
     onNavigateToComponents: () -> Unit,
     onNavigateToSettings: () -> Unit
 ) {
+    val colors = MiuixTheme.colorScheme
+
     Scaffold(
         topBar = {
             TopAppBar(
                 title = "Miuix Demo",
                 actions = {
-                    IconButton(onClick = { /* 搜索 */ }) {
+                    IconButton(onClick = { }) {
                         Icon(imageVector = Icons.Filled.Search, contentDescription = "搜索")
                     }
                 }
@@ -44,12 +47,12 @@ fun HomeScreen(
                 Column(modifier = Modifier.padding(20.dp)) {
                     Text(
                         text = "欢迎使用 Miuix",
-                        color = MiuixTheme.colorScheme.onPrimaryContainer
+                        color = colors.onPrimaryContainer
                     )
                     Spacer(modifier = Modifier.height(8.dp))
                     Text(
                         text = "Miuix 是一个基于 Compose Multiplatform 的 UI 组件库，严格遵循 Xiaomi HyperOS 设计规范。",
-                        color = MiuixTheme.colorScheme.onSurfaceVariant
+                        color = colors.onSurface
                     )
                 }
             }
@@ -64,22 +67,22 @@ fun HomeScreen(
                         .fillMaxWidth()
                         .padding(20.dp),
                     horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = androidx.compose.ui.Alignment.CenterVertically
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
                     Column {
                         Text(
                             text = "组件库",
-                            color = MiuixTheme.colorScheme.onSurface
+                            color = colors.onSurface
                         )
                         Text(
                             text = "浏览所有 Miuix 组件",
-                            color = MiuixTheme.colorScheme.onSurfaceVariant
+                            color = colors.onSurface
                         )
                     }
                     Icon(
                         imageVector = Icons.Filled.Widgets,
                         contentDescription = null,
-                        tint = MiuixTheme.colorScheme.primary
+                        tint = colors.primary
                     )
                 }
             }
@@ -93,22 +96,22 @@ fun HomeScreen(
                         .fillMaxWidth()
                         .padding(20.dp),
                     horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = androidx.compose.ui.Alignment.CenterVertically
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
                     Column {
                         Text(
                             text = "设置",
-                            color = MiuixTheme.colorScheme.onSurface
+                            color = colors.onSurface
                         )
                         Text(
                             text = "Preference 组件展示",
-                            color = MiuixTheme.colorScheme.onSurfaceVariant
+                            color = colors.onSurface
                         )
                     }
                     Icon(
                         imageVector = Icons.Filled.Settings,
                         contentDescription = null,
-                        tint = MiuixTheme.colorScheme.primary
+                        tint = colors.primary
                     )
                 }
             }
@@ -116,7 +119,6 @@ fun HomeScreen(
             // 快速展示区域
             SmallTitle(text = "组件预览")
 
-            // Button 示例
             Button(
                 modifier = Modifier.fillMaxWidth(),
                 onClick = { }
@@ -124,35 +126,32 @@ fun HomeScreen(
                 Text("主要按钮")
             }
 
-            // TextField 示例
+            var textValue by remember { mutableStateOf("") }
             TextField(
                 modifier = Modifier.fillMaxWidth(),
-                value = "",
-                onValueChange = { },
-                placeholder = "输入文本..."
+                value = textValue,
+                onValueChange = { textValue = it },
+                label = "输入文本..."
             )
 
-            // Switch 示例
+            var switchValue by remember { mutableStateOf(true) }
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = androidx.compose.ui.Alignment.CenterVertically
+                verticalAlignment = Alignment.CenterVertically
             ) {
                 Text("启用通知")
-                Switch(checked = true, onCheckedChange = { })
+                Switch(
+                    checked = switchValue,
+                    onCheckedChange = { switchValue = it }
+                )
             }
 
-            // Slider 示例
+            var sliderValue by remember { mutableFloatStateOf(0.7f) }
             Slider(
                 modifier = Modifier.fillMaxWidth(),
-                value = 0.7f,
-                onValueChange = { }
-            )
-
-            // ProgressIndicator
-            ProgressIndicator(
-                modifier = Modifier.fillMaxWidth(),
-                progress = 0.65f
+                value = sliderValue,
+                onValueChange = { sliderValue = it }
             )
         }
     }
