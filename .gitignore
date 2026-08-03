@@ -9,3 +9,11 @@
 
 # Ignore Gradle build output directory
 build
+
+# Android local properties (machine-specific SDK path)
+local.properties
+
+# IDE files
+.idea
+*.iml
+.DS_Store
