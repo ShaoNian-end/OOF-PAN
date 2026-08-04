@@ -122,7 +122,7 @@ fun FilesScreen(
                     key = { it.id }
                 ) { fileItem ->
                     MiuixFileItem(
-                        fileItem = fileItem,
+                        file = fileItem,
                         onClick = { onFileClick(fileItem) }
                     )
                 }

@@ -83,10 +83,10 @@ fun MainNavigation(modifier: Modifier = Modifier) {
                     .fillMaxWidth()
                     .clip(RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp)),
                 containerColor = MiuixColor.Surface,
-                tonalElevation = 0.dp,
-                shadowElevation = 8.dp
+                tonalElevation = 0.dp
             ) {
-                navItems.forEachIndexed { index, item ->
+                for (index in navItems.indices) {
+                    val item = navItems[index]
                     NavigationBarItem(
                         selected = selectedIndex == index,
                         onClick = { selectedIndex = index },
