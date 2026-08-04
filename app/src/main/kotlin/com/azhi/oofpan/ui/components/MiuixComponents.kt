@@ -6,8 +6,8 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.*
-import androidx.compose.material.icons.outlined.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -87,7 +87,7 @@ fun MiuixTopBar(
             if (onBackClick != null) {
                 IconButton(onClick = onBackClick) {
                     Icon(
-                        imageVector = Icons.Default.ArrowBack,
+                        imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                         contentDescription = "返回",
                         tint = MiuixColor.TextPrimary
                     )
@@ -110,6 +110,7 @@ fun MiuixTopBar(
 fun MiuixCard(
     modifier: Modifier = Modifier,
     onClick: (() -> Unit)? = null,
+    shape: androidx.compose.ui.graphics.Shape = MiuixShape.large,
     content: @Composable () -> Unit
 ) {
     Card(
@@ -117,7 +118,7 @@ fun MiuixCard(
             .then(
                 if (onClick != null) Modifier.clickable(onClick = onClick) else Modifier
             ),
-        shape = MiuixShape.large,
+        shape = shape,
         colors = CardDefaults.cardColors(containerColor = MiuixColor.CardBackground),
         elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
     ) {
@@ -241,12 +242,13 @@ fun MiuixFileItem(
  */
 @Composable
 fun MiuixSpaceBar(
-    usedSpace: Long,
-    totalSpace: Long,
+    used: Long,
+    total: Long,
+    percent: Int,
     modifier: Modifier = Modifier
 ) {
-    val percent = if (totalSpace > 0) {
-        (usedSpace.toFloat() / totalSpace.toFloat()).coerceIn(0f, 1f)
+    val percentFloat = if (total > 0) {
+        (used.toFloat() / total.toFloat()).coerceIn(0f, 1f)
     } else {
         0f
     }
@@ -258,12 +260,12 @@ fun MiuixSpaceBar(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
-                text = "已使用 ${formatFileSize(usedSpace)}",
+                text = "已使用 ${formatFileSize(used)}",
                 style = MaterialTheme.typography.bodySmall,
                 color = MiuixColor.TextSecondary
             )
             Text(
-                text = "共 ${formatFileSize(totalSpace)}",
+                text = "共 ${formatFileSize(total)}",
                 style = MaterialTheme.typography.bodySmall,
                 color = MiuixColor.TextSecondary
             )
@@ -279,7 +281,7 @@ fun MiuixSpaceBar(
             Box(
                 modifier = Modifier
                     .fillMaxHeight()
-                    .fillMaxWidth(percent)
+                    .fillMaxWidth(percentFloat)
                     .clip(MiuixShape.round)
                     .background(MiuixColor.Primary)
             )
