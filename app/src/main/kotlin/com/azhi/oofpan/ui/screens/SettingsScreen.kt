@@ -26,6 +26,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
 import com.azhi.oofpan.ui.components.MiuixCard
 import com.azhi.oofpan.ui.components.MiuixTopBar
+import com.azhi.oofpan.ui.theme.LocalMiuixColorScheme
 import com.azhi.oofpan.ui.theme.LocalThemeState
 import com.azhi.oofpan.ui.theme.MiuixColor
 import com.azhi.oofpan.ui.theme.MiuixShape
@@ -37,11 +38,12 @@ fun SettingsScreen(
     modifier: Modifier = Modifier
 ) {
     val themeState = LocalThemeState.current
+    val colors = LocalMiuixColorScheme.current
 
     Column(
         modifier = modifier
             .fillMaxSize()
-            .background(MiuixColor.Background)
+            .background(colors.background)
     ) {
         MiuixTopBar(
             title = "设置",
@@ -59,7 +61,7 @@ fun SettingsScreen(
             Text(
                 text = "显示",
                 style = MiuixTypography.titleMedium,
-                color = MiuixColor.TextPrimary
+                color = colors.onBackground
             )
 
             MiuixCard(
@@ -72,7 +74,8 @@ fun SettingsScreen(
                         label = "深色模式",
                         description = if (themeState.isDarkMode) "已开启深色模式" else "已开启浅色模式",
                         checked = themeState.isDarkMode,
-                        onCheckedChange = { themeState.isDarkMode = it }
+                        onCheckedChange = { themeState.isDarkMode = it },
+                        colors = colors
                     )
                 }
             }
@@ -81,7 +84,7 @@ fun SettingsScreen(
             Text(
                 text = "通用",
                 style = MiuixTypography.titleMedium,
-                color = MiuixColor.TextPrimary
+                color = colors.onBackground
             )
 
             MiuixCard(
@@ -92,13 +95,15 @@ fun SettingsScreen(
                     SettingsClickItem(
                         icon = Icons.Default.Storage,
                         label = "缓存管理",
-                        onClick = { /* TODO */ }
+                        onClick = { /* TODO */ },
+                        colors = colors
                     )
-                    SettingsDivider()
+                    SettingsDivider(colors = colors)
                     SettingsClickItem(
                         icon = Icons.Default.Wifi,
                         label = "网络设置",
-                        onClick = { /* TODO */ }
+                        onClick = { /* TODO */ },
+                        colors = colors
                     )
                 }
             }
@@ -112,7 +117,8 @@ private fun SettingsSwitchItem(
     label: String,
     description: String,
     checked: Boolean,
-    onCheckedChange: (Boolean) -> Unit
+    onCheckedChange: (Boolean) -> Unit,
+    colors: com.azhi.oofpan.ui.theme.MiuixColorScheme
 ) {
     Row(
         modifier = Modifier
@@ -123,7 +129,7 @@ private fun SettingsSwitchItem(
         Icon(
             imageVector = icon,
             contentDescription = label,
-            tint = MiuixColor.Primary,
+            tint = colors.primary,
             modifier = Modifier.size(24.dp)
         )
         Spacer(modifier = Modifier.width(16.dp))
@@ -131,12 +137,12 @@ private fun SettingsSwitchItem(
             Text(
                 text = label,
                 style = MiuixTypography.bodyLarge,
-                color = MiuixColor.TextPrimary
+                color = colors.onBackground
             )
             Text(
                 text = description,
                 style = MiuixTypography.bodySmall,
-                color = MiuixColor.TextSecondary
+                color = colors.onSurfaceSecondary
             )
         }
         Spacer(modifier = Modifier.width(8.dp))
@@ -144,10 +150,10 @@ private fun SettingsSwitchItem(
             checked = checked,
             onCheckedChange = onCheckedChange,
             colors = SwitchDefaults.colors(
-                checkedThumbColor = MiuixColor.Primary,
-                checkedTrackColor = MiuixColor.Primary.copy(alpha = 0.3f),
-                uncheckedThumbColor = MiuixColor.TextSecondary,
-                uncheckedTrackColor = MiuixColor.SurfaceVariant
+                checkedThumbColor = colors.primary,
+                checkedTrackColor = colors.primary.copy(alpha = 0.3f),
+                uncheckedThumbColor = colors.onSurfaceSecondary,
+                uncheckedTrackColor = colors.surfaceVariant
             )
         )
     }
@@ -157,7 +163,8 @@ private fun SettingsSwitchItem(
 private fun SettingsClickItem(
     icon: ImageVector,
     label: String,
-    onClick: () -> Unit
+    onClick: () -> Unit,
+    colors: com.azhi.oofpan.ui.theme.MiuixColorScheme
 ) {
     Row(
         modifier = Modifier
@@ -169,32 +176,32 @@ private fun SettingsClickItem(
         Icon(
             imageVector = icon,
             contentDescription = label,
-            tint = MiuixColor.TextSecondary,
+            tint = colors.onSurfaceSecondary,
             modifier = Modifier.size(24.dp)
         )
         Spacer(modifier = Modifier.width(16.dp))
         Text(
             text = label,
             style = MiuixTypography.bodyLarge,
-            color = MiuixColor.TextPrimary,
+            color = colors.onBackground,
             modifier = Modifier.weight(1f)
         )
         Icon(
             imageVector = Icons.Default.ChevronRight,
             contentDescription = null,
-            tint = MiuixColor.TextTertiary,
+            tint = colors.onSurfaceContainerVariant,
             modifier = Modifier.size(20.dp)
         )
     }
 }
 
 @Composable
-private fun SettingsDivider() {
+private fun SettingsDivider(colors: com.azhi.oofpan.ui.theme.MiuixColorScheme) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
             .padding(start = 60.dp)
             .height(0.5.dp)
-            .background(MiuixColor.Divider)
+            .background(colors.dividerLine)
     )
 }

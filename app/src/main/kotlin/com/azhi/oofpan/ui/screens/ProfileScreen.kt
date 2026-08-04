@@ -25,7 +25,7 @@ import com.azhi.oofpan.ui.components.MiuixCard
 import com.azhi.oofpan.ui.components.MiuixSpaceBar
 import com.azhi.oofpan.ui.components.MiuixTopBar
 import com.azhi.oofpan.ui.components.MiuixVipBadge
-import com.azhi.oofpan.ui.theme.MiuixColor
+import com.azhi.oofpan.ui.theme.LocalMiuixColorScheme
 import com.azhi.oofpan.ui.theme.MiuixShape
 import com.azhi.oofpan.ui.theme.MiuixTypography
 
@@ -36,10 +36,12 @@ fun ProfileScreen(
     onAboutClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val colors = LocalMiuixColorScheme.current
+
     Column(
         modifier = modifier
             .fillMaxSize()
-            .background(MiuixColor.Background)
+            .background(colors.background)
     ) {
         MiuixTopBar(title = "个人中心")
 
@@ -61,6 +63,8 @@ fun ProfileScreen(
 
 @Composable
 private fun UserInfoCard(user: User) {
+    val colors = LocalMiuixColorScheme.current
+
     MiuixCard(
         shape = MiuixShape.medium,
         modifier = Modifier.fillMaxWidth()
@@ -81,7 +85,7 @@ private fun UserInfoCard(user: User) {
                     Text(
                         text = user.name,
                         style = MiuixTypography.titleLarge,
-                        color = MiuixColor.TextPrimary
+                        color = colors.onBackground
                     )
                     Spacer(modifier = Modifier.width(8.dp))
                     MiuixVipBadge(level = user.vipLevel)
@@ -102,6 +106,8 @@ private fun MenuSection(
     onSettingClick: () -> Unit,
     onAboutClick: () -> Unit
 ) {
+    val colors = LocalMiuixColorScheme.current
+
     MiuixCard(
         shape = MiuixShape.medium,
         modifier = Modifier.fillMaxWidth()
@@ -110,31 +116,36 @@ private fun MenuSection(
             MenuItem(
                 icon = Icons.Default.Star,
                 label = "收藏夹",
-                onClick = { /* TODO */ }
+                onClick = { /* TODO */ },
+                colors = colors
             )
-            MenuDivider()
+            MenuDivider(colors = colors)
             MenuItem(
                 icon = Icons.Default.Delete,
                 label = "回收站",
-                onClick = { /* TODO */ }
+                onClick = { /* TODO */ },
+                colors = colors
             )
-            MenuDivider()
+            MenuDivider(colors = colors)
             MenuItem(
                 icon = Icons.Default.SwapHoriz,
                 label = "传输列表",
-                onClick = { /* TODO */ }
+                onClick = { /* TODO */ },
+                colors = colors
             )
-            MenuDivider()
+            MenuDivider(colors = colors)
             MenuItem(
                 icon = Icons.Default.Settings,
                 label = "设置",
-                onClick = onSettingClick
+                onClick = onSettingClick,
+                colors = colors
             )
-            MenuDivider()
+            MenuDivider(colors = colors)
             MenuItem(
                 icon = Icons.Default.Info,
                 label = "关于",
-                onClick = onAboutClick
+                onClick = onAboutClick,
+                colors = colors
             )
         }
     }
@@ -144,7 +155,8 @@ private fun MenuSection(
 private fun MenuItem(
     icon: ImageVector,
     label: String,
-    onClick: () -> Unit
+    onClick: () -> Unit,
+    colors: com.azhi.oofpan.ui.theme.MiuixColorScheme
 ) {
     Row(
         modifier = Modifier
@@ -156,32 +168,32 @@ private fun MenuItem(
         Icon(
             imageVector = icon,
             contentDescription = label,
-            tint = MiuixColor.TextSecondary,
+            tint = colors.onSurfaceSecondary,
             modifier = Modifier.size(24.dp)
         )
         Spacer(modifier = Modifier.width(16.dp))
         Text(
             text = label,
             style = MiuixTypography.bodyLarge,
-            color = MiuixColor.TextPrimary,
+            color = colors.onBackground,
             modifier = Modifier.weight(1f)
         )
         Icon(
             imageVector = Icons.Default.ChevronRight,
             contentDescription = null,
-            tint = MiuixColor.TextTertiary,
+            tint = colors.onSurfaceContainerVariant,
             modifier = Modifier.size(20.dp)
         )
     }
 }
 
 @Composable
-private fun MenuDivider() {
+private fun MenuDivider(colors: com.azhi.oofpan.ui.theme.MiuixColorScheme) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
             .padding(start = 60.dp)
             .height(0.5.dp)
-            .background(MiuixColor.Divider)
+            .background(colors.dividerLine)
     )
 }

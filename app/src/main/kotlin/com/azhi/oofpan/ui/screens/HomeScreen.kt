@@ -30,6 +30,7 @@ import com.azhi.oofpan.ui.components.MiuixCard
 import com.azhi.oofpan.ui.components.MiuixSpaceBar
 import com.azhi.oofpan.ui.components.MiuixTopBar
 import com.azhi.oofpan.ui.components.MiuixVipBadge
+import com.azhi.oofpan.ui.theme.LocalMiuixColorScheme
 import com.azhi.oofpan.ui.theme.MiuixColor
 import com.azhi.oofpan.ui.theme.MiuixShape
 import com.azhi.oofpan.ui.theme.MiuixTypography
@@ -43,10 +44,12 @@ fun HomeScreen(
     onViewAllFiles: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val colors = LocalMiuixColorScheme.current
+
     Column(
         modifier = modifier
             .fillMaxSize()
-            .background(MiuixColor.Background)
+            .background(colors.background)
     ) {
         MiuixTopBar(title = "云盘")
 
@@ -83,6 +86,8 @@ fun HomeScreen(
 
 @Composable
 private fun UserGreetingCard(user: User) {
+    val colors = LocalMiuixColorScheme.current
+
     MiuixCard(
         shape = MiuixShape.medium,
         modifier = Modifier.fillMaxWidth()
@@ -103,7 +108,7 @@ private fun UserGreetingCard(user: User) {
                     Text(
                         text = "你好, ${user.name}",
                         style = MiuixTypography.titleMedium,
-                        color = MiuixColor.TextPrimary
+                        color = colors.onBackground
                     )
                     Spacer(modifier = Modifier.width(8.dp))
                     MiuixVipBadge(level = user.vipLevel)
@@ -121,6 +126,8 @@ private fun UserGreetingCard(user: User) {
 
 @Composable
 private fun QuickActionsRow() {
+    val colors = LocalMiuixColorScheme.current
+
     MiuixCard(
         shape = MiuixShape.medium,
         modifier = Modifier.fillMaxWidth()
@@ -133,19 +140,23 @@ private fun QuickActionsRow() {
         ) {
             QuickActionButton(
                 icon = Icons.Default.CloudUpload,
-                label = "上传"
+                label = "上传",
+                colors = colors
             )
             QuickActionButton(
                 icon = Icons.Default.CloudDownload,
-                label = "下载"
+                label = "下载",
+                colors = colors
             )
             QuickActionButton(
                 icon = Icons.Default.Share,
-                label = "分享"
+                label = "分享",
+                colors = colors
             )
             QuickActionButton(
                 icon = Icons.Default.MoreHoriz,
-                label = "更多"
+                label = "更多",
+                colors = colors
             )
         }
     }
@@ -154,7 +165,8 @@ private fun QuickActionsRow() {
 @Composable
 private fun QuickActionButton(
     icon: ImageVector,
-    label: String
+    label: String,
+    colors: com.azhi.oofpan.ui.theme.MiuixColorScheme
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -167,13 +179,13 @@ private fun QuickActionButton(
             modifier = Modifier
                 .size(44.dp)
                 .clip(MiuixShape.medium)
-                .background(MiuixColor.SurfaceVariant),
+                .background(colors.surfaceVariant),
             contentAlignment = Alignment.Center
         ) {
             Icon(
                 imageVector = icon,
                 contentDescription = label,
-                tint = MiuixColor.Primary,
+                tint = colors.primary,
                 modifier = Modifier.size(24.dp)
             )
         }
@@ -181,7 +193,7 @@ private fun QuickActionButton(
         Text(
             text = label,
             style = MiuixTypography.labelLarge,
-            color = MiuixColor.TextSecondary
+            color = colors.onSurfaceSecondary
         )
     }
 }
@@ -192,6 +204,8 @@ private fun RecentFilesSection(
     onFileClick: (FileItem) -> Unit,
     onViewAll: () -> Unit
 ) {
+    val colors = LocalMiuixColorScheme.current
+
     Column {
         Row(
             modifier = Modifier
@@ -203,12 +217,12 @@ private fun RecentFilesSection(
             Text(
                 text = "最近文件",
                 style = MiuixTypography.titleMedium,
-                color = MiuixColor.TextPrimary
+                color = colors.onBackground
             )
             Text(
                 text = "查看全部",
                 style = MiuixTypography.labelLarge,
-                color = MiuixColor.Primary,
+                color = colors.primary,
                 modifier = Modifier
                     .clip(MiuixShape.small)
                     .clickable(onClick = onViewAll)
@@ -234,6 +248,8 @@ private fun RecentFileItem(
     file: FileItem,
     onClick: () -> Unit
 ) {
+    val colors = LocalMiuixColorScheme.current
+
     MiuixCard(
         shape = MiuixShape.small,
         modifier = Modifier
@@ -253,7 +269,7 @@ private fun RecentFileItem(
                 Icon(
                     imageVector = Icons.Default.Folder,
                     contentDescription = null,
-                    tint = MiuixColor.TextOnPrimary,
+                    tint = colors.onPrimary,
                     modifier = Modifier.size(24.dp)
                 )
             }
@@ -261,7 +277,7 @@ private fun RecentFileItem(
             Text(
                 text = file.name,
                 style = MiuixTypography.bodySmall,
-                color = MiuixColor.TextPrimary,
+                color = colors.onBackground,
                 maxLines = 2,
                 overflow = TextOverflow.Ellipsis
             )
@@ -269,7 +285,7 @@ private fun RecentFileItem(
             Text(
                 text = file.sizeDisplay(),
                 style = MiuixTypography.labelSmall,
-                color = MiuixColor.TextTertiary
+                color = colors.onSurfaceContainerVariant
             )
         }
     }
@@ -277,11 +293,13 @@ private fun RecentFileItem(
 
 @Composable
 private fun RecentActivitiesSection(activities: List<Activity>) {
+    val colors = LocalMiuixColorScheme.current
+
     Column {
         Text(
             text = "最近活动",
             style = MiuixTypography.titleMedium,
-            color = MiuixColor.TextPrimary,
+            color = colors.onBackground,
             modifier = Modifier.padding(bottom = 12.dp)
         )
 
@@ -298,7 +316,7 @@ private fun RecentActivitiesSection(activities: List<Activity>) {
                                 .fillMaxWidth()
                                 .padding(start = 56.dp)
                                 .height(0.5.dp)
-                                .background(MiuixColor.Divider)
+                                .background(colors.dividerLine)
                         )
                     }
                 }
@@ -309,6 +327,8 @@ private fun RecentActivitiesSection(activities: List<Activity>) {
 
 @Composable
 private fun ActivityItem(activity: Activity) {
+    val colors = LocalMiuixColorScheme.current
+
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -325,7 +345,7 @@ private fun ActivityItem(activity: Activity) {
             Icon(
                 imageVector = activityIcon(activity.type),
                 contentDescription = null,
-                tint = MiuixColor.TextOnPrimary,
+                tint = colors.onPrimary,
                 modifier = Modifier.size(18.dp)
             )
         }
@@ -334,7 +354,7 @@ private fun ActivityItem(activity: Activity) {
             Text(
                 text = activity.description,
                 style = MiuixTypography.bodyMedium,
-                color = MiuixColor.TextPrimary,
+                color = colors.onBackground,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis
             )
@@ -342,7 +362,7 @@ private fun ActivityItem(activity: Activity) {
             Text(
                 text = activity.time,
                 style = MiuixTypography.bodySmall,
-                color = MiuixColor.TextTertiary
+                color = colors.onSurfaceContainerVariant
             )
         }
     }

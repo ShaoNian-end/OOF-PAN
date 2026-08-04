@@ -17,7 +17,7 @@ import com.azhi.oofpan.ui.components.MiuixCard
 import com.azhi.oofpan.ui.components.MiuixFileTypeIcon
 import com.azhi.oofpan.ui.components.MiuixTopBar
 import com.azhi.oofpan.ui.components.formatTime
-import com.azhi.oofpan.ui.theme.MiuixColor
+import com.azhi.oofpan.ui.theme.LocalMiuixColorScheme
 import com.azhi.oofpan.ui.theme.MiuixShape
 
 @Composable
@@ -25,10 +25,12 @@ fun SharedScreen(
     sharedList: List<SharedFile>,
     modifier: Modifier = Modifier
 ) {
+    val colors = LocalMiuixColorScheme.current
+
     Column(
         modifier = modifier
             .fillMaxSize()
-            .background(MiuixColor.Background)
+            .background(colors.background)
     ) {
         MiuixTopBar(title = "我的分享")
 
@@ -40,7 +42,7 @@ fun SharedScreen(
                 Text(
                     text = "暂无分享",
                     style = MaterialTheme.typography.bodyLarge,
-                    color = MiuixColor.TextSecondary
+                    color = colors.onSurfaceSecondary
                 )
             }
         } else {
@@ -61,6 +63,7 @@ fun SharedScreen(
 private fun SharedFileCard(
     sharedFile: SharedFile
 ) {
+    val colors = LocalMiuixColorScheme.current
     val extension = sharedFile.fileName.substringAfterLast('.', "")
 
     MiuixCard(
@@ -86,7 +89,7 @@ private fun SharedFileCard(
                         text = sharedFile.fileName,
                         style = MaterialTheme.typography.bodyLarge,
                         fontWeight = FontWeight.Medium,
-                        color = MiuixColor.TextPrimary,
+                        color = colors.onBackground,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis
                     )
@@ -94,7 +97,7 @@ private fun SharedFileCard(
                     Text(
                         text = sharedFile.shareLink,
                         style = MaterialTheme.typography.bodySmall,
-                        color = MiuixColor.TextSecondary,
+                        color = colors.onSurfaceSecondary,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis
                     )
@@ -108,7 +111,7 @@ private fun SharedFileCard(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(0.5.dp)
-                    .background(MiuixColor.Divider)
+                    .background(colors.dividerLine)
             )
 
             Spacer(modifier = Modifier.height(12.dp))
@@ -118,8 +121,8 @@ private fun SharedFileCard(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceEvenly
             ) {
-                StatItem(label = "浏览", value = sharedFile.viewCount.toString())
-                StatItem(label = "下载", value = sharedFile.downloadCount.toString())
+                StatItem(label = "浏览", value = sharedFile.viewCount.toString(), colors = colors)
+                StatItem(label = "下载", value = sharedFile.downloadCount.toString(), colors = colors)
             }
 
             Spacer(modifier = Modifier.height(8.dp))
@@ -129,8 +132,8 @@ private fun SharedFileCard(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                TimeItem(label = "创建时间", time = formatTime(sharedFile.createTime))
-                TimeItem(label = "过期时间", time = formatTime(sharedFile.expireTime))
+                TimeItem(label = "创建时间", time = formatTime(sharedFile.createTime), colors = colors)
+                TimeItem(label = "过期时间", time = formatTime(sharedFile.expireTime), colors = colors)
             }
         }
     }
@@ -139,20 +142,21 @@ private fun SharedFileCard(
 @Composable
 private fun StatItem(
     label: String,
-    value: String
+    value: String,
+    colors: com.azhi.oofpan.ui.theme.MiuixColorScheme
 ) {
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         Text(
             text = value,
             style = MaterialTheme.typography.titleMedium,
             fontWeight = FontWeight.SemiBold,
-            color = MiuixColor.Primary
+            color = colors.primary
         )
         Spacer(modifier = Modifier.height(2.dp))
         Text(
             text = label,
             style = MaterialTheme.typography.bodySmall,
-            color = MiuixColor.TextSecondary
+            color = colors.onSurfaceSecondary
         )
     }
 }
@@ -160,19 +164,20 @@ private fun StatItem(
 @Composable
 private fun TimeItem(
     label: String,
-    time: String
+    time: String,
+    colors: com.azhi.oofpan.ui.theme.MiuixColorScheme
 ) {
     Column {
         Text(
             text = label,
             style = MaterialTheme.typography.bodySmall,
-            color = MiuixColor.TextTertiary
+            color = colors.onSurfaceContainerVariant
         )
         Spacer(modifier = Modifier.height(2.dp))
         Text(
             text = time,
             style = MaterialTheme.typography.bodySmall,
-            color = MiuixColor.TextSecondary
+            color = colors.onSurfaceSecondary
         )
     }
 }

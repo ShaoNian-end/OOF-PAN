@@ -13,31 +13,45 @@ import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
 
 private val LightColorScheme = lightColorScheme(
-    primary = MiuixColor.Primary,
-    onPrimary = MiuixColor.TextOnPrimary,
-    primaryContainer = MiuixColor.PrimaryLight,
-    background = MiuixColor.Background,
-    surface = MiuixColor.Surface,
-    surfaceVariant = MiuixColor.SurfaceVariant,
-    onBackground = MiuixColor.TextPrimary,
-    onSurface = MiuixColor.TextPrimary,
-    onSurfaceVariant = MiuixColor.TextSecondary,
-    outline = MiuixColor.Divider,
-    error = MiuixColor.Error,
+    primary = LightMiuixColorScheme.primary,
+    onPrimary = LightMiuixColorScheme.onPrimary,
+    primaryContainer = LightMiuixColorScheme.primaryContainer,
+    secondary = LightMiuixColorScheme.secondary,
+    onSecondary = LightMiuixColorScheme.onSecondary,
+    secondaryContainer = LightMiuixColorScheme.secondaryContainer,
+    tertiary = LightMiuixColorScheme.onTertiaryContainer,
+    background = LightMiuixColorScheme.background,
+    onBackground = LightMiuixColorScheme.onBackground,
+    surface = LightMiuixColorScheme.surface,
+    onSurface = LightMiuixColorScheme.onSurface,
+    surfaceVariant = LightMiuixColorScheme.surfaceVariant,
+    onSurfaceVariant = LightMiuixColorScheme.onSurfaceSecondary,
+    outline = LightMiuixColorScheme.outline,
+    error = LightMiuixColorScheme.error,
+    onError = LightMiuixColorScheme.onError,
+    errorContainer = LightMiuixColorScheme.errorContainer,
+    onErrorContainer = LightMiuixColorScheme.onErrorContainer,
 )
 
 private val DarkColorScheme = darkColorScheme(
-    primary = MiuixColor.PrimaryLight,
-    onPrimary = MiuixColor.TextOnPrimary,
-    primaryContainer = MiuixColor.PrimaryDark,
-    background = MiuixColor.DarkBackground,
-    surface = MiuixColor.DarkSurface,
-    surfaceVariant = MiuixColor.DarkSurfaceVariant,
-    onBackground = MiuixColor.DarkTextPrimary,
-    onSurface = MiuixColor.DarkTextPrimary,
-    onSurfaceVariant = MiuixColor.DarkTextSecondary,
-    outline = MiuixColor.DividerAlpha,
-    error = MiuixColor.Error,
+    primary = DarkMiuixColorScheme.primary,
+    onPrimary = DarkMiuixColorScheme.onPrimary,
+    primaryContainer = DarkMiuixColorScheme.primaryContainer,
+    secondary = DarkMiuixColorScheme.secondary,
+    onSecondary = DarkMiuixColorScheme.onSecondary,
+    secondaryContainer = DarkMiuixColorScheme.secondaryContainer,
+    tertiary = DarkMiuixColorScheme.onTertiaryContainer,
+    background = DarkMiuixColorScheme.background,
+    onBackground = DarkMiuixColorScheme.onBackground,
+    surface = DarkMiuixColorScheme.surface,
+    onSurface = DarkMiuixColorScheme.onSurface,
+    surfaceVariant = DarkMiuixColorScheme.surfaceVariant,
+    onSurfaceVariant = DarkMiuixColorScheme.onSurfaceSecondary,
+    outline = DarkMiuixColorScheme.outline,
+    error = DarkMiuixColorScheme.error,
+    onError = DarkMiuixColorScheme.onError,
+    errorContainer = DarkMiuixColorScheme.errorContainer,
+    onErrorContainer = DarkMiuixColorScheme.onErrorContainer,
 )
 
 @Composable
@@ -46,6 +60,7 @@ fun MiuixTheme(
     content: @Composable () -> Unit
 ) {
     val colorScheme = if (darkTheme) DarkColorScheme else LightColorScheme
+    val miuixColorScheme = if (darkTheme) DarkMiuixColorScheme else LightMiuixColorScheme
 
     val view = LocalView.current
     if (!view.isInEditMode) {
@@ -63,16 +78,18 @@ fun MiuixTheme(
         }
     }
 
-    MaterialTheme(
-        colorScheme = colorScheme,
-        typography = MiuixTypography,
-        shapes = androidx.compose.material3.Shapes(
-            extraSmall = MiuixShape.small,
-            small = MiuixShape.medium,
-            medium = MiuixShape.large,
-            large = MiuixShape.xlarge,
-            extraLarge = MiuixShape.round,
-        ),
-        content = content
-    )
+    ProvideMiuixColorScheme(miuixColorScheme = miuixColorScheme) {
+        MaterialTheme(
+            colorScheme = colorScheme,
+            typography = MiuixTypography,
+            shapes = androidx.compose.material3.Shapes(
+                extraSmall = MiuixShape.small,
+                small = MiuixShape.medium,
+                medium = MiuixShape.large,
+                large = MiuixShape.xlarge,
+                extraLarge = MiuixShape.round,
+            ),
+            content = content
+        )
+    }
 }

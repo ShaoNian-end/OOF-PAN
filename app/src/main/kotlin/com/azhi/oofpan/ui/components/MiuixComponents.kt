@@ -23,6 +23,7 @@ import com.azhi.oofpan.data.model.Activity
 import com.azhi.oofpan.data.model.FileItem
 import com.azhi.oofpan.data.model.SharedFile
 import com.azhi.oofpan.data.model.User
+import com.azhi.oofpan.ui.theme.LocalMiuixColorScheme
 import com.azhi.oofpan.ui.theme.MiuixColor
 import com.azhi.oofpan.ui.theme.MiuixShape
 
@@ -74,13 +75,15 @@ fun MiuixTopBar(
     actions: @Composable RowScope.() -> Unit = {},
     modifier: Modifier = Modifier
 ) {
+    val colors = LocalMiuixColorScheme.current
+
     TopAppBar(
         title = {
             Text(
                 text = title,
                 style = MaterialTheme.typography.titleLarge,
                 fontWeight = FontWeight.SemiBold,
-                color = MiuixColor.TextPrimary
+                color = colors.onBackground
             )
         },
         navigationIcon = {
@@ -89,15 +92,15 @@ fun MiuixTopBar(
                     Icon(
                         imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                         contentDescription = "返回",
-                        tint = MiuixColor.TextPrimary
+                        tint = colors.onBackground
                     )
                 }
             }
         },
         actions = actions,
         colors = TopAppBarDefaults.topAppBarColors(
-            containerColor = MiuixColor.Surface,
-            titleContentColor = MiuixColor.TextPrimary
+            containerColor = colors.surface,
+            titleContentColor = colors.onBackground
         ),
         modifier = modifier
     )
@@ -113,13 +116,15 @@ fun MiuixCard(
     shape: androidx.compose.ui.graphics.Shape = MiuixShape.large,
     content: @Composable () -> Unit
 ) {
+    val colors = LocalMiuixColorScheme.current
+
     Card(
         modifier = modifier
             .then(
                 if (onClick != null) Modifier.clickable(onClick = onClick) else Modifier
             ),
         shape = shape,
-        colors = CardDefaults.cardColors(containerColor = MiuixColor.CardBackground),
+        colors = CardDefaults.cardColors(containerColor = colors.surfaceContainer),
         elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
     ) {
         content()
@@ -174,6 +179,8 @@ fun MiuixFileItem(
     onClick: ((FileItem) -> Unit)? = null,
     onStarClick: ((FileItem) -> Unit)? = null
 ) {
+    val colors = LocalMiuixColorScheme.current
+
     Row(
         modifier = modifier
             .fillMaxWidth()
@@ -195,7 +202,7 @@ fun MiuixFileItem(
                 text = file.name,
                 style = MaterialTheme.typography.bodyLarge,
                 fontWeight = FontWeight.Medium,
-                color = MiuixColor.TextPrimary,
+                color = colors.onBackground,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis
             )
@@ -205,18 +212,18 @@ fun MiuixFileItem(
                     Text(
                         text = formatFileSize(file.size),
                         style = MaterialTheme.typography.bodySmall,
-                        color = MiuixColor.TextSecondary
+                        color = colors.onSurfaceSecondary
                     )
                     Text(
                         text = " · ",
                         style = MaterialTheme.typography.bodySmall,
-                        color = MiuixColor.TextSecondary
+                        color = colors.onSurfaceSecondary
                     )
                 }
                 Text(
                     text = formatTime(file.updateTime),
                     style = MaterialTheme.typography.bodySmall,
-                    color = MiuixColor.TextSecondary
+                    color = colors.onSurfaceSecondary
                 )
             }
         }
@@ -229,7 +236,7 @@ fun MiuixFileItem(
                 Icon(
                     imageVector = if (file.isStarred) Icons.Default.Star else Icons.Default.StarBorder,
                     contentDescription = if (file.isStarred) "取消星标" else "标记星标",
-                    tint = if (file.isStarred) MiuixColor.Warning else MiuixColor.TextTertiary,
+                    tint = if (file.isStarred) MiuixColor.Warning else colors.onSurfaceContainerVariant,
                     modifier = Modifier.size(20.dp)
                 )
             }
@@ -247,6 +254,7 @@ fun MiuixSpaceBar(
     percent: Int,
     modifier: Modifier = Modifier
 ) {
+    val colors = LocalMiuixColorScheme.current
     val percentFloat = if (total > 0) {
         (used.toFloat() / total.toFloat()).coerceIn(0f, 1f)
     } else {
@@ -262,12 +270,12 @@ fun MiuixSpaceBar(
             Text(
                 text = "已使用 ${formatFileSize(used)}",
                 style = MaterialTheme.typography.bodySmall,
-                color = MiuixColor.TextSecondary
+                color = colors.onSurfaceSecondary
             )
             Text(
                 text = "共 ${formatFileSize(total)}",
                 style = MaterialTheme.typography.bodySmall,
-                color = MiuixColor.TextSecondary
+                color = colors.onSurfaceSecondary
             )
         }
         Spacer(modifier = Modifier.height(8.dp))
@@ -276,14 +284,14 @@ fun MiuixSpaceBar(
                 .fillMaxWidth()
                 .height(6.dp)
                 .clip(MiuixShape.round)
-                .background(MiuixColor.SurfaceVariant)
+                .background(colors.surfaceVariant)
         ) {
             Box(
                 modifier = Modifier
                     .fillMaxHeight()
                     .fillMaxWidth(percentFloat)
                     .clip(MiuixShape.round)
-                    .background(MiuixColor.Primary)
+                    .background(colors.primary)
             )
         }
     }
@@ -300,8 +308,9 @@ fun MiuixBottomNavItem(
     modifier: Modifier = Modifier,
     onClick: () -> Unit = {}
 ) {
-    val iconTint = if (isSelected) MiuixColor.Primary else MiuixColor.TextSecondary
-    val textColor = if (isSelected) MiuixColor.Primary else MiuixColor.TextSecondary
+    val colors = LocalMiuixColorScheme.current
+    val iconTint = if (isSelected) colors.primary else colors.onSurfaceSecondary
+    val textColor = if (isSelected) colors.primary else colors.onSurfaceSecondary
 
     Box(
         modifier = modifier
@@ -338,11 +347,13 @@ fun MiuixAvatar(
     name: String? = null,
     size: Int = 48
 ) {
+    val colors = LocalMiuixColorScheme.current
+
     Box(
         modifier = modifier
             .size(size.dp)
             .clip(CircleShape)
-            .background(MiuixColor.Primary.copy(alpha = 0.15f)),
+            .background(colors.primary.copy(alpha = 0.15f)),
         contentAlignment = Alignment.Center
     ) {
         if (name != null && name.isNotEmpty()) {
@@ -350,13 +361,13 @@ fun MiuixAvatar(
                 text = name.take(1),
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.Bold,
-                color = MiuixColor.Primary
+                color = colors.primary
             )
         } else {
             Icon(
                 imageVector = Icons.Default.Person,
                 contentDescription = "头像",
-                tint = MiuixColor.TextSecondary,
+                tint = colors.onSurfaceSecondary,
                 modifier = Modifier.size((size * 0.5).dp)
             )
         }
@@ -371,11 +382,12 @@ fun MiuixVipBadge(
     level: String,
     modifier: Modifier = Modifier
 ) {
+    val colors = LocalMiuixColorScheme.current
     val (label, bgColor, textColor) = when (level.lowercase()) {
         "gold" -> Triple("黄金", MiuixColor.VipGold, Color.White)
         "silver" -> Triple("白银", MiuixColor.VipSilver, Color.White)
-        "platinum" -> Triple("铂金", MiuixColor.VipPlatinum, MiuixColor.TextPrimary)
-        else -> Triple(level, MiuixColor.SurfaceVariant, MiuixColor.TextSecondary)
+        "platinum" -> Triple("铂金", MiuixColor.VipPlatinum, colors.onBackground)
+        else -> Triple(level, colors.surfaceVariant, colors.onSurfaceSecondary)
     }
 
     Box(
@@ -403,6 +415,8 @@ fun MiuixSectionHeader(
     modifier: Modifier = Modifier,
     onMoreClick: (() -> Unit)? = null
 ) {
+    val colors = LocalMiuixColorScheme.current
+
     Row(
         modifier = modifier
             .fillMaxWidth()
@@ -414,7 +428,7 @@ fun MiuixSectionHeader(
             text = title,
             style = MaterialTheme.typography.titleMedium,
             fontWeight = FontWeight.SemiBold,
-            color = MiuixColor.TextPrimary
+            color = colors.onBackground
         )
         if (onMoreClick != null) {
             TextButton(
@@ -424,13 +438,13 @@ fun MiuixSectionHeader(
                 Text(
                     text = "更多",
                     style = MaterialTheme.typography.labelLarge,
-                    color = MiuixColor.Primary
+                    color = colors.primary
                 )
                 Spacer(modifier = Modifier.width(2.dp))
                 Icon(
                     imageVector = Icons.Default.ChevronRight,
                     contentDescription = "更多",
-                    tint = MiuixColor.Primary,
+                    tint = colors.primary,
                     modifier = Modifier.size(16.dp)
                 )
             }
@@ -446,8 +460,9 @@ fun MiuixActivityItem(
     activity: Activity,
     modifier: Modifier = Modifier
 ) {
+    val colors = LocalMiuixColorScheme.current
     val (icon: ImageVector, iconColor: Color) = when (activity.type.lowercase()) {
-        "upload" -> Icons.Default.CloudUpload to MiuixColor.Primary
+        "upload" -> Icons.Default.CloudUpload to colors.primary
         "download" -> Icons.Default.CloudDownload to MiuixColor.Success
         "share" -> Icons.Default.Share to MiuixColor.Warning
         "delete" -> Icons.Default.Delete to MiuixColor.Error
@@ -481,7 +496,7 @@ fun MiuixActivityItem(
             Text(
                 text = activity.description,
                 style = MaterialTheme.typography.bodyMedium,
-                color = MiuixColor.TextPrimary,
+                color = colors.onBackground,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis
             )
@@ -489,7 +504,7 @@ fun MiuixActivityItem(
             Text(
                 text = formatTime(activity.time),
                 style = MaterialTheme.typography.bodySmall,
-                color = MiuixColor.TextSecondary
+                color = colors.onSurfaceSecondary
             )
         }
     }

@@ -1,5 +1,7 @@
 package com.azhi.oofpan.ui.navigation
 
+import androidx.activity.OnBackPressedCallback
+import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -16,6 +18,7 @@ import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -31,6 +34,7 @@ import com.azhi.oofpan.ui.screens.HomeScreen
 import com.azhi.oofpan.ui.screens.ProfileScreen
 import com.azhi.oofpan.ui.screens.SettingsScreen
 import com.azhi.oofpan.ui.screens.SharedScreen
+import com.azhi.oofpan.ui.theme.LocalMiuixColorScheme
 import com.azhi.oofpan.ui.theme.MiuixColor
 
 data class BottomNavItem(
@@ -76,6 +80,20 @@ fun MainNavigation(modifier: Modifier = Modifier) {
 
     var selectedIndex by rememberSaveable { mutableIntStateOf(0) }
 
+    // 使用 DisposableEffect + OnBackPressedCallback 可靠拦截系统返回键
+    val dispatcher = LocalOnBackPressedDispatcherOwner.current?.onBackPressedDispatcher
+    DisposableEffect(showSettings, dispatcher) {
+        if (!showSettings || dispatcher == null) return@DisposableEffect onDispose {}
+
+        val callback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                showSettings = false
+            }
+        }
+        dispatcher.addCallback(callback)
+        onDispose { callback.remove() }
+    }
+
     if (showSettings) {
         SettingsScreen(
             onBackClick = { showSettings = false }
@@ -83,13 +101,15 @@ fun MainNavigation(modifier: Modifier = Modifier) {
         return
     }
 
+    val colors = LocalMiuixColorScheme.current
+
     Scaffold(
         modifier = modifier.fillMaxSize(),
-        containerColor = MiuixColor.Background,
+        containerColor = colors.background,
         bottomBar = {
             NavigationBar(
                 modifier = Modifier.fillMaxWidth(),
-                containerColor = MiuixColor.Surface.copy(alpha = 0.85f),
+                containerColor = colors.surface.copy(alpha = 0.85f),
                 tonalElevation = 0.dp
             ) {
                 for (index in navItems.indices) {
@@ -105,10 +125,10 @@ fun MainNavigation(modifier: Modifier = Modifier) {
                         },
                         label = { Text(text = item.label) },
                         colors = NavigationBarItemDefaults.colors(
-                            selectedIconColor = MiuixColor.Primary,
-                            selectedTextColor = MiuixColor.Primary,
-                            unselectedIconColor = MiuixColor.TextSecondary,
-                            unselectedTextColor = MiuixColor.TextSecondary,
+                            selectedIconColor = colors.primary,
+                            selectedTextColor = colors.primary,
+                            unselectedIconColor = colors.onSurfaceSecondary,
+                            unselectedTextColor = colors.onSurfaceSecondary,
                             indicatorColor = Color.Transparent
                         )
                     )

@@ -32,6 +32,7 @@ import androidx.compose.ui.unit.sp
 import com.azhi.oofpan.data.model.FileItem
 import com.azhi.oofpan.ui.components.MiuixFileItem
 import com.azhi.oofpan.ui.components.MiuixTopBar
+import com.azhi.oofpan.ui.theme.LocalMiuixColorScheme
 import com.azhi.oofpan.ui.theme.MiuixColor
 
 private enum class FileCategory(
@@ -61,6 +62,7 @@ fun FilesScreen(
     onFileClick: (FileItem) -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val colors = LocalMiuixColorScheme.current
     var selectedCategory by remember { mutableStateOf(FileCategory.ALL) }
 
     val filteredFiles = remember(files, selectedCategory) {
@@ -82,7 +84,7 @@ fun FilesScreen(
                     Icon(
                         imageVector = Icons.Default.Search,
                         contentDescription = "搜索",
-                        tint = MiuixColor.TextPrimary
+                        tint = colors.onBackground
                     )
                 }
             }
@@ -103,7 +105,7 @@ fun FilesScreen(
             ) {
                 Text(
                     text = "暂无文件",
-                    color = MiuixColor.TextSecondary,
+                    color = colors.onSurfaceSecondary,
                     fontSize = 14.sp
                 )
             }
@@ -137,6 +139,8 @@ private fun CategoryFilterChips(
     onCategorySelected: (FileCategory) -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val colors = LocalMiuixColorScheme.current
+
     Row(
         modifier = modifier
             .fillMaxWidth()
@@ -155,10 +159,10 @@ private fun CategoryFilterChips(
                     )
                 },
                 colors = FilterChipDefaults.filterChipColors(
-                    containerColor = MiuixColor.SurfaceVariant,
-                    selectedContainerColor = MiuixColor.Primary,
-                    labelColor = MiuixColor.TextSecondary,
-                    selectedLabelColor = MiuixColor.TextOnPrimary
+                    containerColor = colors.surfaceVariant,
+                    selectedContainerColor = colors.primary,
+                    labelColor = colors.onSurfaceSecondary,
+                    selectedLabelColor = colors.onPrimary
                 ),
                 shape = RoundedCornerShape(20.dp),
                 border = null
