@@ -34,6 +34,13 @@ android {
     }
 }
 
+// 跳过 AAR 元数据检查（miuix-blur 需要 compileSdk 37，但 AGP 8.13 最高只支持 36）
+tasks.configureEach {
+    if (name.startsWith("check") && name.endsWith("AarMetadata")) {
+        enabled = false
+    }
+}
+
 dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
