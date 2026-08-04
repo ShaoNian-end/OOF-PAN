@@ -1,7 +1,6 @@
 package com.azhi.oofpan.ui.theme
 
 import android.app.Activity
-import android.view.View
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.lightColorScheme
@@ -12,8 +11,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
-import androidx.core.view.WindowInsetsCompat
-import androidx.core.view.WindowInsetsControllerCompat
 
 private val LightColorScheme = lightColorScheme(
     primary = MiuixColor.Primary,
