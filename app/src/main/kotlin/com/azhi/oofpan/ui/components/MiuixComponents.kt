@@ -28,6 +28,55 @@ import com.azhi.oofpan.ui.theme.MiuixColor
 import com.azhi.oofpan.ui.theme.MiuixShape
 
 /**
+ * 面包屑导航项
+ */
+data class BreadcrumbItem(
+    val label: String,
+    val onClick: () -> Unit
+)
+
+/**
+ * MIUI X 风格面包屑导航栏
+ * 用于文件夹路径导航，例如: 全部文件 > 项目文档 > 子文件夹
+ */
+@Composable
+fun MiuixBreadcrumbBar(
+    items: List<BreadcrumbItem>,
+    modifier: Modifier = Modifier
+) {
+    val colors = LocalMiuixColorScheme.current
+
+    Row(
+        modifier = modifier
+            .fillMaxWidth()
+            .background(colors.surface)
+            .horizontalScroll(rememberScrollState())
+            .padding(horizontal = 16.dp, vertical = 12.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        items.forEachIndexed { index, item ->
+            Text(
+                text = item.label,
+                style = MaterialTheme.typography.titleSmall,
+                fontWeight = if (index == items.lastIndex) FontWeight.SemiBold else FontWeight.Normal,
+                color = if (index == items.lastIndex) colors.onBackground else colors.onSurfaceSecondary,
+                modifier = Modifier
+                    .clip(RoundedCornerShape(4.dp))
+                    .clickable(onClick = item.onClick)
+                    .padding(horizontal = 4.dp, vertical = 2.dp)
+            )
+            if (index < items.lastIndex) {
+                Text(
+                    text = "  >  ",
+                    style = MaterialTheme.typography.titleSmall,
+                    color = colors.onSurfaceSecondary
+                )
+            }
+        }
+    }
+}
+
+/**
  * 格式化文件大小，返回 KB/MB/GB 字符串
  */
 fun formatFileSize(bytes: Long): String {
