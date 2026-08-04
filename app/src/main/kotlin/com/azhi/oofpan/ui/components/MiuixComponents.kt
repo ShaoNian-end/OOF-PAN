@@ -9,8 +9,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
-import androidx.compose.material3.NavigationBarItem
-import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -302,31 +300,35 @@ fun MiuixBottomNavItem(
     modifier: Modifier = Modifier,
     onClick: () -> Unit = {}
 ) {
-    NavigationBarItem(
-        icon = {
+    val iconTint = if (isSelected) MiuixColor.Primary else MiuixColor.TextSecondary
+    val textColor = if (isSelected) MiuixColor.Primary else MiuixColor.TextSecondary
+    val bgColor = if (isSelected) MiuixColor.Primary.copy(alpha = 0.1f) else Color.Transparent
+
+    Box(
+        modifier = modifier
+            .clip(MiuixShape.round)
+            .background(bgColor)
+            .clickable(onClick = onClick)
+            .padding(horizontal = 16.dp, vertical = 6.dp),
+        contentAlignment = Alignment.Center
+    ) {
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(2.dp)
+        ) {
             Icon(
                 imageVector = icon,
-                contentDescription = label
+                contentDescription = label,
+                tint = iconTint
             )
-        },
-        label = {
             Text(
                 text = label,
                 fontSize = 11.sp,
-                fontWeight = if (isSelected) FontWeight.Medium else FontWeight.Normal
+                fontWeight = if (isSelected) FontWeight.Medium else FontWeight.Normal,
+                color = textColor
             )
-        },
-        selected = isSelected,
-        onClick = onClick,
-        colors = NavigationBarItemDefaults.colors(
-            selectedIconColor = MiuixColor.Primary,
-            selectedTextColor = MiuixColor.Primary,
-            unselectedIconColor = MiuixColor.TextSecondary,
-            unselectedTextColor = MiuixColor.TextSecondary,
-            indicatorColor = MiuixColor.Primary.copy(alpha = 0.1f)
-        ),
-        modifier = modifier
-    )
+        }
+    }
 }
 
 /**
