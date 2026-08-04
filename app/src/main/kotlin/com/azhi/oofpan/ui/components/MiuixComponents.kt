@@ -290,7 +290,7 @@ fun MiuixSpaceBar(
 }
 
 /**
- * MIUI X 风格底部导航项
+ * MIUI X 风格底部导航项（无椭圆背景）
  */
 @Composable
 fun MiuixBottomNavItem(
@@ -302,12 +302,9 @@ fun MiuixBottomNavItem(
 ) {
     val iconTint = if (isSelected) MiuixColor.Primary else MiuixColor.TextSecondary
     val textColor = if (isSelected) MiuixColor.Primary else MiuixColor.TextSecondary
-    val bgColor = if (isSelected) MiuixColor.Primary.copy(alpha = 0.1f) else Color.Transparent
 
     Box(
         modifier = modifier
-            .clip(MiuixShape.round)
-            .background(bgColor)
             .clickable(onClick = onClick)
             .padding(horizontal = 16.dp, vertical = 6.dp),
         contentAlignment = Alignment.Center
